@@ -4,13 +4,17 @@ import psycopg
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-# ⚠️ Пока всё зашито прямо в код — это и предстоит исправить.
-DATABASE_URL = "postgresql://guestbook:supersecret123@localhost:5432/guestbook"
-GREETING = "Добро пожаловать в гостевую книгу!"
+from config import settings
 
 
 def connect():
-    return psycopg.connect(DATABASE_URL)
+    return psycopg.connect(
+        host=settings.postgres_host,
+        port=settings.postgres_port,
+        dbname=settings.postgres_db,
+        user=settings.postgres_user,
+        password=settings.postgres_password.get_secret_value(),
+    )
 
 
 @asynccontextmanager
@@ -33,7 +37,7 @@ class Message(BaseModel):
 
 @app.get("/")
 def index():
-    return {"message": GREETING}
+    return {"message": settings.greeting}
 
 
 @app.get("/health")

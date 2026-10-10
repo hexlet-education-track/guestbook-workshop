@@ -1,0 +1,6 @@
+[project]
+name = "guestbook"
+version = "0.1.0"
+description = "FastAPI guestbook backed by PostgreSQL"
+requires-python = ">=3.13,<3.14"
+dependencies = ["fastapi", "uvicorn", "psycopg[binary]", "pydantic-settings"]
